@@ -68,46 +68,49 @@ class _CalendarPage extends State<CalendarPage> {
       appBar: AppBar(
         title: const Text('Home Calendar'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
 
-            TableCalendar<Event>(
-              firstDay: kFirstDay,
-              lastDay: kLastDay,
-              focusedDay: _focusedDay,
-              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-              rangeStartDay: _rangeStart,
-              rangeEndDay: _rangeEnd,
-              calendarFormat: _calendarFormat,
-              rangeSelectionMode: _rangeSelectionMode,
-              //eventLoader: _getEventsForDay,
-              startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarStyle: CalendarStyle(
-                // Use `CalendarStyle` to customize the UI
-                outsideDaysVisible: false,
-              ),
-              headerStyle: HeaderStyle(
-                formatButtonVisible: false,
-              ),
-              onDaySelected: _onDaySelected,
-              //onRangeSelected: _onRangeSelected,
-              onFormatChanged: (format) {
-                if (_calendarFormat != format) {
-                  setState(() {
-                    _calendarFormat = format;
-                  });
-                }
-              },
-              onPageChanged: (focusedDay) {
-                _focusedDay = focusedDay;
-              },
+          TableCalendar<Event>(
+            firstDay: kFirstDay,
+            lastDay: kLastDay,
+            focusedDay: _focusedDay,
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            rangeStartDay: _rangeStart,
+            rangeEndDay: _rangeEnd,
+            calendarFormat: _calendarFormat,
+            rangeSelectionMode: _rangeSelectionMode,
+            //eventLoader: _getEventsForDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
+            calendarStyle: CalendarStyle(
+              // Use `CalendarStyle` to customize the UI
+              outsideDaysVisible: false,
             ),
+            headerStyle: HeaderStyle(
+              formatButtonVisible: false,
+            ),
+            onDaySelected: _onDaySelected,
+            //onRangeSelected: _onRangeSelected,
+            onFormatChanged: (format) {
+              if (_calendarFormat != format) {
+                setState(() {
+                  _calendarFormat = format;
+                });
+              }
+            },
+            onPageChanged: (focusedDay) {
+              _focusedDay = focusedDay;
+            },
+          ),
 
-            Spacer(),
-          ],
-        ),
+          const SizedBox(height: 2.0),
+          ElevatedButton(
+            child: Text('Add Event'),
+            onPressed: () => {},
+          ),
+          const SizedBox(height: 2.0),
+        ],
       ),
     );
   }
