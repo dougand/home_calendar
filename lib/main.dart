@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'package:flutter/material.dart';
+import 'package:home_calendar/calendar_event.dart';
 //import 'package:intl/date_symbol_data_local.dart';
 import 'package:home_calendar/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -110,6 +111,8 @@ class _CalendarPage extends State<CalendarPage> {
             onPressed: () => {},
           ),
           const SizedBox(height: 2.0),
+
+          CalendarEventWidget(),
         ],
       ),
     );
