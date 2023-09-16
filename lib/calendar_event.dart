@@ -17,11 +17,20 @@ class CalendarEvent {
 
 
 class CalendarEventWidget extends StatefulWidget {
+
+  final CalendarEvent event;
+
+  const CalendarEventWidget(this.event);
+
   @override
-  _CalendarEventWidget createState() => _CalendarEventWidget();
+  _CalendarEventWidget createState() => _CalendarEventWidget(event);
 }
 
 class _CalendarEventWidget extends State<CalendarEventWidget> {
+
+  final CalendarEvent event;
+
+  _CalendarEventWidget(this.event);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,10 @@ class _CalendarEventWidget extends State<CalendarEventWidget> {
         border: Border.all(),
         borderRadius: BorderRadius.circular(12.0),
       ),
-      child: Text('Cal Event')
+      child: ListTile(
+          title: Text(event.title)
+            )
+
     );
   }
 }

@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:home_calendar/calendar_event.dart';
+import 'package:home_calendar/calendar_data.dart';
 //import 'package:intl/date_symbol_data_local.dart';
 import 'package:home_calendar/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -47,6 +48,9 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
+  CalendarData calData = new CalendarData();
+
+
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
@@ -65,6 +69,9 @@ class _CalendarPage extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    List<CalendarEvent> theList = calData.testList;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Calendar'),
@@ -106,13 +113,16 @@ class _CalendarPage extends State<CalendarPage> {
           ),
 
           const SizedBox(height: 2.0),
+
           ElevatedButton(
             child: Text('Add Event'),
             onPressed: () => {},
           ),
           const SizedBox(height: 2.0),
 
-          CalendarEventWidget(),
+          CalendarEventWidget(theList[0]),
+          CalendarEventWidget(theList[1]),
+          CalendarEventWidget(theList[2]),
         ],
       ),
     );
