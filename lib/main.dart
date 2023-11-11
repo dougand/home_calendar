@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:home_calendar/calendar_event.dart';
 import 'package:home_calendar/calendar_data.dart';
+import 'package:home_calendar/edit_event.dart';
 //import 'package:intl/date_symbol_data_local.dart';
 import 'package:home_calendar/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -120,7 +121,9 @@ class _CalendarPage extends State<CalendarPage> {
 
           ElevatedButton(
             child: const Text('Add Event'),
-            onPressed: () => {},
+            onPressed: () => {
+              editEvent()
+            },
           ),
           const SizedBox(height: 2.0),
 
@@ -131,7 +134,17 @@ class _CalendarPage extends State<CalendarPage> {
       ),
     );
   }
+
+  Future editEvent() => showDialog(
+      context: context,
+      builder: (context) => const EditEventForm(),
+  );
+
+  //}
+
 }
+
+
 
 
 //=================================================================
