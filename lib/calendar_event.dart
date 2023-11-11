@@ -20,7 +20,7 @@ class CalendarEventWidget extends StatefulWidget {
 
   final CalendarEvent event;
 
-  const CalendarEventWidget(this.event);
+  const CalendarEventWidget(this.event, {super.key});
 
   @override
   _CalendarEventWidget createState() => _CalendarEventWidget(event);

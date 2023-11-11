@@ -16,10 +16,12 @@ import 'package:table_calendar/table_calendar.dart';
 
 void main() {
   //initializeDateFormatting().then((_) => runApp(MyApp()));
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,13 +29,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: CalendarPage(),
+      home: const CalendarPage(),
     );
   }
 }
 
 
 class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
   @override
   _CalendarPage createState() => _CalendarPage();
 }
@@ -48,7 +52,7 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  CalendarData calData = new CalendarData();
+  CalendarData calData = CalendarData();
 
 
 
@@ -91,11 +95,11 @@ class _CalendarPage extends State<CalendarPage> {
             rangeSelectionMode: _rangeSelectionMode,
             //eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
-            headerStyle: HeaderStyle(
+            headerStyle: const HeaderStyle(
               formatButtonVisible: false,
             ),
             onDaySelected: _onDaySelected,
@@ -115,7 +119,7 @@ class _CalendarPage extends State<CalendarPage> {
           const SizedBox(height: 2.0),
 
           ElevatedButton(
-            child: Text('Add Event'),
+            child: const Text('Add Event'),
             onPressed: () => {},
           ),
           const SizedBox(height: 2.0),
