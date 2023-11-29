@@ -34,24 +34,41 @@ class EditEventFormState extends State<EditEventForm> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
 
+  String title = '';
+  String description = '';
+  String date = '';
+  String colour = '';
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Form(
       key: _formKey,
       child: Material(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+
+
+
+        child: ListView(
+          padding: EdgeInsets.all(16),
           children: [
-            TextFormField(
-              // The validator receives the text that the user has entered.
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
-            ),
+            editTitle(),
+            const SizedBox(height: 16),
+            editDate(),
+            const SizedBox(height: 16),
+            editDescription(),
+            const SizedBox(height: 16),
+            editColour(),
+            const SizedBox(height: 32),
+
+            // TextFormField(
+            //   // The validator receives the text that the user has entered.
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please enter some text';
+            //     }
+            //     return null;
+            //   },
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
               child: ElevatedButton(
@@ -73,6 +90,43 @@ class EditEventFormState extends State<EditEventForm> {
       ),
     );
   }
+
+
+  Widget editTitle() => TextFormField(
+    decoration: InputDecoration(
+      labelText: 'Title',
+      border: OutlineInputBorder(),
+    ),
+    onChanged: (value) => setState(() => title = value),
+  );
+
+
+  Widget editDate() => TextFormField(
+    decoration: InputDecoration(
+      labelText: 'Date/Time',
+      border: OutlineInputBorder(),
+    ),
+    onChanged: (value) => setState(() => date = value),
+  );
+
+
+  Widget editDescription() => TextFormField(
+    decoration: InputDecoration(
+      labelText: 'Description',
+      border: OutlineInputBorder(),
+    ),
+    onChanged: (value) => setState(() => description = value),
+  );
+
+
+  Widget editColour() => TextFormField(
+    decoration: InputDecoration(
+      labelText: 'Colour',
+      border: OutlineInputBorder(),
+    ),
+    onChanged: (value) => setState(() => colour = value),
+  );
+
 }
 
 
