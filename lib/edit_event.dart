@@ -14,6 +14,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flex_color_picker/flex_color_picker.dart';
 
 import 'event_list.dart';
 
@@ -43,6 +44,31 @@ class EditEventFormState extends State<EditEventForm> {
   String date = '';
   String colour = '';
 
+  final _dateC = TextEditingController();
+  final _timeC = TextEditingController();
+
+  ///Date
+  DateTime selected = DateTime.now();
+  DateTime initial = DateTime(2000);
+  DateTime last = DateTime(2025);
+
+  ///Time
+  TimeOfDay timeOfDay = TimeOfDay.now();
+
+// Color for the picker shown in Card on the screen.
+  late Color screenPickerColor;
+  // Color for the picker in a dialog using onChanged.
+  late Color dialogPickerColor;
+  // Color for picker using the color select dialog.
+  late Color dialogSelectColor;
+
+  @override
+  void initState() {
+    super.initState();
+    screenPickerColor = Colors.blue;  // Material blue.
+    dialogPickerColor = Colors.red;   // Material red.
+    dialogSelectColor = const Color(0xFFA239CA); // A purple color.
+  }
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
@@ -128,12 +154,21 @@ class EditEventFormState extends State<EditEventForm> {
   );
 
 
-  Widget editDate() => TextFormField(
-    decoration: const InputDecoration(
+
+  Widget editDate() => Column(
+    children: [
+      TextFormField(
+      controller: _dateC,
+  decoration: const InputDecoration(
       labelText: 'Date/Time',
       border: OutlineInputBorder(),
     ),
-    onChanged: (value) => setState(() => date = value),
+  ),
+    ElevatedButton(
+        onPressed: () => displayDatePicker(context),
+        child: const Text("Pick Date")),
+
+      ]
   );
 
 
@@ -146,15 +181,128 @@ class EditEventFormState extends State<EditEventForm> {
   );
 
 
-  Widget editColour() => TextFormField(
-    decoration: const InputDecoration(
-      labelText: 'Colour',
-      border: OutlineInputBorder(),
-    ),
-    onChanged: (value) => setState(() => colour = value),
+  Widget editColour() =>
+
+  Column(
+    children: [
+  TextFormField(
+  decoration: const InputDecoration(
+  labelText: 'Colour',
+    border: OutlineInputBorder(),
+  ),
+  onChanged: (value) => setState(() => colour = value),
+  ),
+
+      ElevatedButton(
+          onPressed: () => colorPickerDialog(),
+          child: const Text("Pick Colour")),
+
+    ],
+
+
   );
 
+
+
+  Future displayDatePicker(BuildContext context) async {
+    var date = await showDatePicker(
+      context: context,
+      initialDate: selected,
+      firstDate: initial,
+      lastDate: last,
+    );
+
+    if (date != null) {
+      setState(() {
+        _dateC.text = date.toLocal().toString().split(" ")[0];
+      });
+    }
+  }
+
+  Future displayTimePicker(BuildContext context) async {
+    var time = await showTimePicker(
+        context: context,
+        initialTime: timeOfDay);
+
+    if (time != null) {
+      setState(() {
+        _timeC.text = "${time.hour}:${time.minute}";
+      });
+    }
+  }
+
+
+  Future<bool> colorPickerDialog() async {
+    return ColorPicker(
+      // Use the dialogPickerColor as start color.
+      color: dialogPickerColor,
+      // Update the dialogPickerColor using the callback.
+      onColorChanged: (Color color) =>
+          setState(() => dialogPickerColor = color),
+      width: 40,
+      height: 40,
+      borderRadius: 4,
+      spacing: 5,
+      runSpacing: 5,
+      wheelDiameter: 155,
+      heading: Text(
+        'Select color',
+        style: Theme.of(context).textTheme.titleSmall,
+      ),
+      subheading: Text(
+        'Select color shade',
+        style: Theme.of(context).textTheme.titleSmall,
+      ),
+      wheelSubheading: Text(
+        'Selected color and its shades',
+        style: Theme.of(context).textTheme.titleSmall,
+      ),
+      showMaterialName: true,
+      showColorName: true,
+      showColorCode: true,
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        longPressMenu: true,
+      ),
+      materialNameTextStyle: Theme.of(context).textTheme.bodySmall,
+      colorNameTextStyle: Theme.of(context).textTheme.bodySmall,
+      colorCodeTextStyle: Theme.of(context).textTheme.bodySmall,
+      pickersEnabled: const <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: true,
+        ColorPickerType.accent: true,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: false,
+      },
+      //customColorSwatchesAndNames: colorsNameMap,
+    ).showPickerDialog(
+      context,
+      // New in version 3.0.0 custom transitions support.
+      transitionBuilder: (BuildContext context,
+          Animation<double> a1,
+          Animation<double> a2,
+          Widget widget) {
+        final double curvedValue =
+            Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(
+              0.0, curvedValue * 200, 0.0),
+          child: Opacity(
+            opacity: a1.value,
+            child: widget,
+          ),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 400),
+      constraints:
+      const BoxConstraints(minHeight: 460, minWidth: 300, maxWidth: 320),
+    );
+  }
+
 }
+
+
+
 
 
 

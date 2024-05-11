@@ -3,6 +3,7 @@
 //import 'dart:ui';
 import 'dart:async';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
@@ -18,6 +19,21 @@ class Event {
   DateTime startTime = DateTime.now();
 
   Color colour = Colors.blue;
+
+
+  Event(this.title,this.description, this.startTime, this.colour);
+
+  // Convert an instance of this class to a Map
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'description': description,
+      'startTime': startTime,
+      'colour': colour,
+    };
+  }
+
+
 }
 
 
