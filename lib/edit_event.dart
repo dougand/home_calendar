@@ -10,14 +10,10 @@
 //
 //
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
-
+import 'package:intl/intl.dart';
 import 'event_list.dart';
-
 
 // Create a Form widget.
 class EditEventForm extends StatefulWidget {
@@ -41,8 +37,10 @@ class EditEventFormState extends State<EditEventForm> {
 
   String title = '';
   String description = '';
-  String date = '';
+  DateTime date = DateTime.now();
   String colour = '';
+
+  DateFormat formatter = DateFormat('EEE, d MMM yyyy'); // use any format
 
   final _dateC = TextEditingController();
   final _timeC = TextEditingController();
@@ -65,24 +63,22 @@ class EditEventFormState extends State<EditEventForm> {
   @override
   void initState() {
     super.initState();
-    screenPickerColor = Colors.blue;  // Material blue.
-    dialogPickerColor = Colors.red;   // Material red.
+    screenPickerColor = Colors.blue; // Material blue.
+    dialogPickerColor = Colors.red; // Material red.
     dialogSelectColor = const Color(0xFFA239CA); // A purple color.
+
+    _dateC.text = formatter.format(selected);
   }
+
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
     return Form(
-
       key: _formKey,
       child: Material(
-
-
-
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-
             // ListTile(
             //     title: new TextField(
             //       decoration: new InputDecoration(
@@ -94,115 +90,105 @@ class EditEventFormState extends State<EditEventForm> {
             // ListView(
             //     padding: EdgeInsets.all(16),
             //   children: [
-                editTitle(),
-                const SizedBox(height: 16),
-                editDate(),
-                const SizedBox(height: 16),
-                editDescription(),
-                const SizedBox(height: 16),
-                editColour(),
-                const SizedBox(height: 32),
+            editTitle(),
+            const SizedBox(height: 16),
+            editDate(),
+            const SizedBox(height: 16),
+            editDescription(),
+            const SizedBox(height: 16),
+            editColour(),
+            const SizedBox(height: 32),
 
-                // TextFormField(
-                //   // The validator receives the text that the user has entered.
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Please enter some text';
-                //     }
-                //     return null;
-                //   },
-                // ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  child: ElevatedButton(
-                    onPressed: () {
-
-                      print('Submit pressed');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Saving Data')),
-                        );
-
-                        EventList().saveEventsToFile();
-
-                      // Validate returns true if the form is valid, or false otherwise.
-                      // if (_formKey.currentState!.validate()) {
-                      //   // If the form is valid, display a snackbar. In the real world,
-                      //   // you'd often call a server or save the information in a database.
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(content: Text('Processing Data')),
-                      //   );
-                      //}
-                    },
-                    child: const Text('Submit'),
-                  ),
-                ),
-              ],
+            // TextFormField(
+            //   // The validator receives the text that the user has entered.
+            //   validator: (value) {
+            //     if (value == null || value.isEmpty) {
+            //       return 'Please enter some text';
+            //     }
+            //     return null;
+            //   },
             // ),
-         // ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: ElevatedButton(
+                onPressed: () {
+                  print('Submit pressed');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Saving Data')),
+                  );
+
+                  EventList().saveEventsToFile();
+
+                  // Validate returns true if the form is valid, or false otherwise.
+                  // if (_formKey.currentState!.validate()) {
+                  //   // If the form is valid, display a snackbar. In the real world,
+                  //   // you'd often call a server or save the information in a database.
+                  //   ScaffoldMessenger.of(context).showSnackBar(
+                  //     const SnackBar(content: Text('Processing Data')),
+                  //   );
+                  //}
+                },
+                child: const Text('Submit'),
+              ),
+            ),
+          ],
+          // ),
+          // ],
         ),
       ),
     );
   }
 
-
   Widget editTitle() => TextFormField(
-    decoration: const InputDecoration(
-      labelText: 'Title',
-      border: OutlineInputBorder(),
-    ),
-    onChanged: (value) => setState(() => title = value),
-  );
+        decoration: const InputDecoration(
+          labelText: 'Title',
+          border: OutlineInputBorder(),
+        ),
+        onChanged: (value) => setState(() => title = value),
+      );
 
-
-
-  Widget editDate() => Column(
-    children: [
-      TextFormField(
-      controller: _dateC,
-  decoration: const InputDecoration(
-      labelText: 'Date/Time',
-      border: OutlineInputBorder(),
-    ),
-  ),
-    ElevatedButton(
-        onPressed: () => displayDatePicker(context),
-        child: const Text("Pick Date")),
-
-      ]
-  );
-
+  Widget editDate() => Column(children: [
+        InkWell(
+          onTap: () => displayDatePicker(context),
+          child: Container(
+            child: IgnorePointer(
+              child: TextFormField(
+                controller: _dateC,
+                decoration: const InputDecoration(
+                  labelText: 'Date/Time',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ),
+        ),
+//        ElevatedButton(
+//            onPressed: () => displayDatePicker(context),
+//            child: const Text("Pick Date")),
+      ]);
 
   Widget editDescription() => TextFormField(
-    decoration: const InputDecoration(
-      labelText: 'Description',
-      border: OutlineInputBorder(),
-    ),
-    onChanged: (value) => setState(() => description = value),
-  );
+        decoration: const InputDecoration(
+          labelText: 'Description',
+          border: OutlineInputBorder(),
+        ),
+        onChanged: (value) => setState(() => description = value),
+      );
 
-
-  Widget editColour() =>
-
-  Column(
-    children: [
-  TextFormField(
-  decoration: const InputDecoration(
-  labelText: 'Colour',
-    border: OutlineInputBorder(),
-  ),
-  onChanged: (value) => setState(() => colour = value),
-  ),
-
-      ElevatedButton(
-          onPressed: () => colorPickerDialog(),
-          child: const Text("Pick Colour")),
-
-    ],
-
-
-  );
-
-
+  Widget editColour() => Column(
+        children: [
+          TextFormField(
+            decoration: const InputDecoration(
+              labelText: 'Colour',
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) => setState(() => colour = value),
+          ),
+          ElevatedButton(
+              onPressed: () => colorPickerDialog(),
+              child: const Text("Pick Colour")),
+        ],
+      );
 
   Future displayDatePicker(BuildContext context) async {
     var date = await showDatePicker(
@@ -214,15 +200,14 @@ class EditEventFormState extends State<EditEventForm> {
 
     if (date != null) {
       setState(() {
-        _dateC.text = date.toLocal().toString().split(" ")[0];
+        selected =date;
+        _dateC.text = formatter.format(date);
       });
     }
   }
 
   Future displayTimePicker(BuildContext context) async {
-    var time = await showTimePicker(
-        context: context,
-        initialTime: timeOfDay);
+    var time = await showTimePicker(context: context, initialTime: timeOfDay);
 
     if (time != null) {
       setState(() {
@@ -230,7 +215,6 @@ class EditEventFormState extends State<EditEventForm> {
       });
     }
   }
-
 
   Future<bool> colorPickerDialog() async {
     return ColorPicker(
@@ -269,7 +253,7 @@ class EditEventFormState extends State<EditEventForm> {
       pickersEnabled: const <ColorPickerType, bool>{
         ColorPickerType.both: false,
         ColorPickerType.primary: true,
-        ColorPickerType.accent: true,
+        ColorPickerType.accent: false,
         ColorPickerType.bw: false,
         ColorPickerType.custom: false,
         ColorPickerType.wheel: false,
@@ -278,15 +262,12 @@ class EditEventFormState extends State<EditEventForm> {
     ).showPickerDialog(
       context,
       // New in version 3.0.0 custom transitions support.
-      transitionBuilder: (BuildContext context,
-          Animation<double> a1,
-          Animation<double> a2,
-          Widget widget) {
+      transitionBuilder: (BuildContext context, Animation<double> a1,
+          Animation<double> a2, Widget widget) {
         final double curvedValue =
             Curves.easeInOutBack.transform(a1.value) - 1.0;
         return Transform(
-          transform: Matrix4.translationValues(
-              0.0, curvedValue * 200, 0.0),
+          transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
           child: Opacity(
             opacity: a1.value,
             child: widget,
@@ -295,15 +276,7 @@ class EditEventFormState extends State<EditEventForm> {
       },
       transitionDuration: const Duration(milliseconds: 400),
       constraints:
-      const BoxConstraints(minHeight: 460, minWidth: 300, maxWidth: 320),
+          const BoxConstraints(minHeight: 460, minWidth: 300, maxWidth: 320),
     );
   }
-
 }
-
-
-
-
-
-
-
