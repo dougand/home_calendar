@@ -76,6 +76,7 @@ class EditEventFormState extends State<EditEventForm> {
     return Form(
       key: _formKey,
       child: Material(
+        color: Colors.grey.shade200,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -143,6 +144,8 @@ class EditEventFormState extends State<EditEventForm> {
         decoration: const InputDecoration(
           labelText: 'Title',
           border: OutlineInputBorder(),
+          filled: true,
+          fillColor: Colors.white,
         ),
         onChanged: (value) => setState(() => title = value),
       );
@@ -156,8 +159,13 @@ class EditEventFormState extends State<EditEventForm> {
                 controller: _dateC,
                 decoration: const InputDecoration(
                   labelText: 'Date/Time',
+                  filled: true,
+                  fillColor: Colors.white,
                   border: OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.arrow_drop_down),
+
                 ),
+
               ),
             ),
           ),
@@ -181,6 +189,8 @@ class EditEventFormState extends State<EditEventForm> {
             decoration: const InputDecoration(
               labelText: 'Colour',
               border: OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.orange,
             ),
             onChanged: (value) => setState(() => colour = value),
           ),
