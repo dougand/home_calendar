@@ -10,6 +10,7 @@
 //
 //
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:intl/intl.dart';
@@ -38,7 +39,7 @@ class EditEventFormState extends State<EditEventForm> {
   String title = '';
   String description = '';
   DateTime date = DateTime.now();
-  String colour = '';
+  Color colour = Colors.orange;
 
   DateFormat formatter = DateFormat('EEE, d MMM yyyy'); // use any format
 
@@ -88,6 +89,8 @@ class EditEventFormState extends State<EditEventForm> {
             //   ),
             // ),
 
+            const Text("Edit Note"),
+            const SizedBox(height: 16),
             // ListView(
             //     padding: EdgeInsets.all(16),
             //   children: [
@@ -183,16 +186,21 @@ class EditEventFormState extends State<EditEventForm> {
         onChanged: (value) => setState(() => description = value),
       );
 
-  Widget editColour() => Column(
+
+
+
+
+  Widget editColour( {Color colr=Colors.red }) => Column(
         children: [
-          TextFormField(
+          TextField(
             decoration: const InputDecoration(
               labelText: 'Colour',
               border: OutlineInputBorder(),
               filled: true,
               fillColor: Colors.orange,
+
             ),
-            onChanged: (value) => setState(() => colour = value),
+            //onChanged: (value) => setState(() => colour = value),
           ),
           ElevatedButton(
               onPressed: () => colorPickerDialog(),
@@ -290,3 +298,13 @@ class EditEventFormState extends State<EditEventForm> {
     );
   }
 }
+
+
+// class showColour extends StatefulWidget {
+//
+//   @override
+//   bool showColour ==(Object other) {
+//     // TODO: implement ==
+//     return super == other;
+//   }
+// }
