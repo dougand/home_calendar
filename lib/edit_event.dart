@@ -89,7 +89,9 @@ class EditEventFormState extends State<EditEventForm> {
             //   ),
             // ),
 
-            const Text("Edit Note"),
+            const Text("Edit Note",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+            ),
             const SizedBox(height: 16),
             // ListView(
             //     padding: EdgeInsets.all(16),
@@ -173,9 +175,6 @@ class EditEventFormState extends State<EditEventForm> {
             ),
           ),
         ),
-//        ElevatedButton(
-//            onPressed: () => displayDatePicker(context),
-//            child: const Text("Pick Date")),
       ]);
 
   Widget editDescription() => TextFormField(
@@ -193,20 +192,28 @@ class EditEventFormState extends State<EditEventForm> {
   Widget editColour( {Color colr=Colors.red }) => Column(
         children: [
           TextField(
-            decoration: const InputDecoration(
+            decoration:  InputDecoration(
               labelText: 'Colour',
               border: OutlineInputBorder(),
               filled: true,
-              fillColor: Colors.orange,
+              fillColor: colour,
 
             ),
             //onChanged: (value) => setState(() => colour = value),
           ),
           ElevatedButton(
               onPressed: () => colorPickerDialog(),
-              child: const Text("Pick Colour")),
+              child: const Text("Pick Colour"),
+
+            ),
+
         ],
       );
+
+  Color getColour() {
+    return Colors.red;
+  }
+
 
   Future displayDatePicker(BuildContext context) async {
     var date = await showDatePicker(
@@ -237,10 +244,11 @@ class EditEventFormState extends State<EditEventForm> {
   Future<bool> colorPickerDialog() async {
     return ColorPicker(
       // Use the dialogPickerColor as start color.
-      color: dialogPickerColor,
+      color: colour,
       // Update the dialogPickerColor using the callback.
       onColorChanged: (Color color) =>
-          setState(() => dialogPickerColor = color),
+          setState(() => colour = color),
+
       width: 40,
       height: 40,
       borderRadius: 4,
