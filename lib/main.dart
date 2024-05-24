@@ -9,6 +9,8 @@ import 'package:home_calendar/edit_event.dart';
 import 'package:home_calendar/utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+import 'color_picker.dart';
+
 // import 'pages/basics_example.dart';
 // import 'pages/complex_example.dart';
 // import 'pages/events_example.dart';
@@ -17,7 +19,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 void main() {
   //initializeDateFormatting().then((_) => runApp(MyApp()));
-  runApp(const MyApp());
+ // runApp(const MyApp());
+  runApp(const ColorPickerDemo());
+
 }
 
 class MyApp extends StatelessWidget {
