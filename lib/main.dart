@@ -11,16 +11,12 @@ import 'package:table_calendar/table_calendar.dart';
 
 import 'color_picker.dart';
 
-// import 'pages/basics_example.dart';
-// import 'pages/complex_example.dart';
-// import 'pages/events_example.dart';
-// import 'pages/multi_example.dart';
-// import 'pages/range_example.dart';
 
 void main() {
   //initializeDateFormatting().then((_) => runApp(MyApp()));
- // runApp(const MyApp());
+//    runApp(const MyApp());
   runApp(const ColorPickerDemo());
+//  runApp(const FormWidgetsDemo());
 
 }
 
