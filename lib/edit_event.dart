@@ -36,10 +36,10 @@ class EditEventFormState extends State<EditEventForm> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
 
-  String title = '';
-  String description = '';
-  DateTime date = DateTime.now();
-  Color colour = Colors.orange;
+  String ev_title = '';
+  String ev_details = '';
+  DateTime ev_date = DateTime.now();
+  Color ev_colour = Colors.orange;
 
   DateFormat formatter = DateFormat('EEE, d MMM yyyy'); // use any format
 
@@ -152,7 +152,7 @@ class EditEventFormState extends State<EditEventForm> {
           filled: true,
           fillColor: Colors.white,
         ),
-        onChanged: (value) => setState(() => title = value),
+        onChanged: (value) => setState(() => ev_title = value),
       );
 
   Widget editDate() => Column(children: [
@@ -182,7 +182,7 @@ class EditEventFormState extends State<EditEventForm> {
           labelText: 'Description',
           border: OutlineInputBorder(),
         ),
-        onChanged: (value) => setState(() => description = value),
+        onChanged: (value) => setState(() => ev_details = value),
       );
 
 
@@ -196,7 +196,7 @@ class EditEventFormState extends State<EditEventForm> {
               labelText: 'Colour',
               border: OutlineInputBorder(),
               filled: true,
-              fillColor: colour,
+              fillColor: ev_colour,
 
             ),
             //onChanged: (value) => setState(() => colour = value),
@@ -241,13 +241,81 @@ class EditEventFormState extends State<EditEventForm> {
     }
   }
 
-  Future<bool> colorPickerDialog() async {
+
+
+  Future colorPickerDialog() async {
+    // Wait for the dialog to return color selection result.
+    final Color newColor = await showColorPickerDialog(
+      // The dialog needs a context, we pass it in.
+      context,
+      // We use the dialogSelectColor, as its starting color.
+      ev_colour,
+      title: Text('Pick Colour',
+          style: Theme.of(context).textTheme.titleLarge),
+      width: 40,
+      height: 40,
+      spacing: 0,
+      runSpacing: 0,
+      borderRadius: 0,
+      wheelDiameter: 165,
+      enableOpacity: false,
+      showColorCode: false,
+      colorCodeHasColor: false,
+      pickersEnabled: <ColorPickerType, bool>{
+        ColorPickerType.both: false,
+        ColorPickerType.primary: true,
+        ColorPickerType.accent: false,
+        ColorPickerType.bw: false,
+        ColorPickerType.custom: false,
+        ColorPickerType.wheel: false,
+      },
+      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
+        copyButton: false,
+        pasteButton: false,
+        longPressMenu: false,
+      ),
+      actionButtons: const ColorPickerActionButtons(
+        okButton: false,
+        closeButton: false,
+        dialogActionButtons: true,
+      ),
+      transitionBuilder: (BuildContext context,
+          Animation<double> a1,
+          Animation<double> a2,
+          Widget widget) {
+        final double curvedValue =
+            Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(
+              0.0, curvedValue * 200, 0.0),
+          child: Opacity(
+            opacity: a1.value,
+            child: widget,
+          ),
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 400),
+      constraints: const BoxConstraints(
+          minHeight: 320, minWidth: 320, maxWidth: 320),
+    );
+    // We update the dialogSelectColor, to the returned result
+    // color. If the dialog was dismissed it actually returns
+    // the color we started with. The extra update for that
+    // below does not really matter, but if you want you can
+    // check if they are equal and skip the update below.
+    setState(() {
+      ev_colour = newColor;
+    });
+
+  }
+
+  Future<bool> colorPickerDialogOld() async {
     return ColorPicker(
       // Use the dialogPickerColor as start color.
-      color: colour,
+      color: ev_colour,
       // Update the dialogPickerColor using the callback.
       onColorChanged: (Color color) =>
-          setState(() => colour = color),
+          setState(() => ev_colour = color),
 
       width: 40,
       height: 40,

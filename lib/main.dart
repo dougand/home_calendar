@@ -14,8 +14,8 @@ import 'color_picker.dart';
 
 void main() {
   //initializeDateFormatting().then((_) => runApp(MyApp()));
-//    runApp(const MyApp());
-  runApp(const ColorPickerDemo());
+    runApp(const MyApp());
+//  runApp(const ColorPickerDemo());
 //  runApp(const FormWidgetsDemo());
 
 }
