@@ -93,17 +93,23 @@ class EditEventFormState extends State<EditEventForm> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             const SizedBox(height: 16),
-            // ListView(
-            //     padding: EdgeInsets.all(16),
-            //   children: [
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+                Expanded(child: editDate(), flex: 3),
+                Expanded(child: editColour()),
+
+              ],
+            ),
+
+            const SizedBox(height: 32),
+
             editTitle(),
-            const SizedBox(height: 16),
-            editDate(),
             const SizedBox(height: 16),
             editDescription(),
             const SizedBox(height: 16),
-            editColour(),
-            const SizedBox(height: 32),
 
             // TextFormField(
             //   // The validator receives the text that the user has entered.
@@ -155,7 +161,7 @@ class EditEventFormState extends State<EditEventForm> {
         onChanged: (value) => setState(() => ev_title = value),
       );
 
-  Widget editDate() => Column(children: [
+  Widget editDate() =>
         InkWell(
           onTap: () => displayDatePicker(context),
           child: Container(
@@ -168,14 +174,11 @@ class EditEventFormState extends State<EditEventForm> {
                   fillColor: Colors.white,
                   border: OutlineInputBorder(),
                   suffixIcon: Icon(Icons.arrow_drop_down),
-
                 ),
-
               ),
             ),
           ),
-        ),
-      ]);
+      );
 
   Widget editDescription() => TextFormField(
         decoration: const InputDecoration(
@@ -189,25 +192,22 @@ class EditEventFormState extends State<EditEventForm> {
 
 
 
-  Widget editColour( {Color colr=Colors.red }) => Column(
-        children: [
-          TextField(
-            decoration:  InputDecoration(
-              labelText: 'Colour',
-              border: OutlineInputBorder(),
-              filled: true,
-              fillColor: ev_colour,
-
+  Widget editColour() =>
+          InkWell(
+            onTap: () => colorPickerDialog(),
+            child: Container(
+              child: IgnorePointer(
+                child: TextField(
+                  decoration:  InputDecoration(
+                    labelText: 'Colour',
+                    border: OutlineInputBorder(),
+                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    filled: true,
+                    fillColor: ev_colour,
+                  ),
+                ),
+              ),
             ),
-            //onChanged: (value) => setState(() => colour = value),
-          ),
-          ElevatedButton(
-              onPressed: () => colorPickerDialog(),
-              child: const Text("Pick Colour"),
-
-            ),
-
-        ],
       );
 
   Color getColour() {
