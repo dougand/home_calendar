@@ -10,7 +10,6 @@
 //
 //
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +17,9 @@ import 'event_list.dart';
 
 // Create a Form widget.
 class EditEventForm extends StatefulWidget {
-  const EditEventForm({super.key});
+  final Event event;
+
+  const EditEventForm( {super.key, required this.event});
 
   @override
   EditEventFormState createState() {
@@ -36,10 +37,7 @@ class EditEventFormState extends State<EditEventForm> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
 
-  String ev_title = '';
-  String ev_details = '';
-  DateTime ev_date = DateTime.now();
-  Color ev_colour = Colors.orange;
+  late Event ev;// = widget.event;
 
   DateFormat formatter = DateFormat('EEE, d MMM yyyy'); // use any format
 
@@ -54,20 +52,11 @@ class EditEventFormState extends State<EditEventForm> {
   ///Time
   TimeOfDay timeOfDay = TimeOfDay.now();
 
-// Color for the picker shown in Card on the screen.
-  late Color screenPickerColor;
-  // Color for the picker in a dialog using onChanged.
-  late Color dialogPickerColor;
-  // Color for picker using the color select dialog.
-  late Color dialogSelectColor;
-
   @override
   void initState() {
     super.initState();
-    screenPickerColor = Colors.blue; // Material blue.
-    dialogPickerColor = Colors.red; // Material red.
-    dialogSelectColor = const Color(0xFFA239CA); // A purple color.
 
+    ev = widget.event;
     _dateC.text = formatter.format(selected);
   }
 
@@ -81,13 +70,6 @@ class EditEventFormState extends State<EditEventForm> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            // ListTile(
-            //     title: new TextField(
-            //       decoration: new InputDecoration(
-            //         hintText: "New Entry",
-            //       ),
-            //   ),
-            // ),
 
             const Text("Edit Note",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
@@ -111,54 +93,69 @@ class EditEventFormState extends State<EditEventForm> {
             editDescription(),
             const SizedBox(height: 16),
 
-            // TextFormField(
-            //   // The validator receives the text that the user has entered.
-            //   validator: (value) {
-            //     if (value == null || value.isEmpty) {
-            //       return 'Please enter some text';
-            //     }
-            //     return null;
-            //   },
-            // ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: ElevatedButton(
-                onPressed: () {
-                  print('Submit pressed');
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Saving Data')),
-                  );
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
 
-                  EventList().saveEventsToFile();
+              children: [
+                Expanded(child: cancelButton() ),
+                Expanded(child: saveButton()),
 
-                  // Validate returns true if the form is valid, or false otherwise.
-                  // if (_formKey.currentState!.validate()) {
-                  //   // If the form is valid, display a snackbar. In the real world,
-                  //   // you'd often call a server or save the information in a database.
-                  //   ScaffoldMessenger.of(context).showSnackBar(
-                  //     const SnackBar(content: Text('Processing Data')),
-                  //   );
-                  //}
-                },
-                child: const Text('Submit'),
-              ),
+              ],
             ),
+
           ],
-          // ),
-          // ],
         ),
       ),
     );
   }
 
+
+  Widget cancelButton() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    child: ElevatedButton(
+      onPressed: () {
+        print('Cancel pressed');
+        Navigator.pop(context);
+      },
+      child: const Text('Cancel'),
+    ),
+  );
+
+
+  Widget saveButton() => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 16),
+    child: ElevatedButton(
+      onPressed: () {
+        print('Submit pressed');
+        Navigator.pop(context,ev);
+
+  //      EventList().saveEventsToFile();
+
+        // Validate returns true if the form is valid, or false otherwise.
+        // if (_formKey.currentState!.validate()) {
+        //   // If the form is valid, display a snackbar. In the real world,
+        //   // you'd often call a server or save the information in a database.
+        //   ScaffoldMessenger.of(context).showSnackBar(
+        //     const SnackBar(content: Text('Processing Data')),
+        //   );
+        //}
+      },
+      child: const Text('Save'),
+    ),
+  );
+
+
+
+
+
   Widget editTitle() => TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Title',
+          labelText: 'Heading',
           border: OutlineInputBorder(),
           filled: true,
           fillColor: Colors.white,
         ),
-        onChanged: (value) => setState(() => ev_title = value),
+        onChanged: (value) => setState(() => ev.title = value),
       );
 
   Widget editDate() =>
@@ -182,10 +179,15 @@ class EditEventFormState extends State<EditEventForm> {
 
   Widget editDescription() => TextFormField(
         decoration: const InputDecoration(
-          labelText: 'Description',
+          labelText: 'Details',
+          filled: true,
+          fillColor: Colors.white,
           border: OutlineInputBorder(),
         ),
-        onChanged: (value) => setState(() => ev_details = value),
+        keyboardType: TextInputType.multiline,
+        minLines: 1,
+        maxLines: null,
+        onChanged: (value) => setState(() => ev.details = value),
       );
 
 
@@ -200,10 +202,12 @@ class EditEventFormState extends State<EditEventForm> {
                 child: TextField(
                   decoration:  InputDecoration(
                     labelText: 'Colour',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  //  hintText: 'h',
                     border: OutlineInputBorder(),
                     suffixIcon: Icon(Icons.arrow_drop_down),
                     filled: true,
-                    fillColor: ev_colour,
+                    fillColor: ev.colour,
                   ),
                 ),
               ),
@@ -249,7 +253,7 @@ class EditEventFormState extends State<EditEventForm> {
       // The dialog needs a context, we pass it in.
       context,
       // We use the dialogSelectColor, as its starting color.
-      ev_colour,
+      ev.colour,
       title: Text('Pick Colour',
           style: Theme.of(context).textTheme.titleLarge),
       width: 40,
@@ -304,83 +308,11 @@ class EditEventFormState extends State<EditEventForm> {
     // below does not really matter, but if you want you can
     // check if they are equal and skip the update below.
     setState(() {
-      ev_colour = newColor;
+      ev.colour = newColor;
     });
 
   }
 
-  Future<bool> colorPickerDialogOld() async {
-    return ColorPicker(
-      // Use the dialogPickerColor as start color.
-      color: ev_colour,
-      // Update the dialogPickerColor using the callback.
-      onColorChanged: (Color color) =>
-          setState(() => ev_colour = color),
 
-      width: 40,
-      height: 40,
-      borderRadius: 4,
-      spacing: 5,
-      runSpacing: 5,
-      wheelDiameter: 155,
-      heading: Text(
-        'Select color',
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
-      subheading: Text(
-        'Select color shade',
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
-      wheelSubheading: Text(
-        'Selected color and its shades',
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
-      showMaterialName: true,
-      showColorName: true,
-      showColorCode: true,
-      copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-        longPressMenu: true,
-      ),
-      materialNameTextStyle: Theme.of(context).textTheme.bodySmall,
-      colorNameTextStyle: Theme.of(context).textTheme.bodySmall,
-      colorCodeTextStyle: Theme.of(context).textTheme.bodySmall,
-      pickersEnabled: const <ColorPickerType, bool>{
-        ColorPickerType.both: false,
-        ColorPickerType.primary: true,
-        ColorPickerType.accent: false,
-        ColorPickerType.bw: false,
-        ColorPickerType.custom: false,
-        ColorPickerType.wheel: false,
-      },
-      //customColorSwatchesAndNames: colorsNameMap,
-    ).showPickerDialog(
-      context,
-      // New in version 3.0.0 custom transitions support.
-      transitionBuilder: (BuildContext context, Animation<double> a1,
-          Animation<double> a2, Widget widget) {
-        final double curvedValue =
-            Curves.easeInOutBack.transform(a1.value) - 1.0;
-        return Transform(
-          transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
-          child: Opacity(
-            opacity: a1.value,
-            child: widget,
-          ),
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 400),
-      constraints:
-          const BoxConstraints(minHeight: 460, minWidth: 300, maxWidth: 320),
-    );
-  }
 }
 
-
-// class showColour extends StatefulWidget {
-//
-//   @override
-//   bool showColour ==(Object other) {
-//     // TODO: implement ==
-//     return super == other;
-//   }
-// }

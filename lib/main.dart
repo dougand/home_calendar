@@ -7,9 +7,10 @@ import 'package:home_calendar/calendar_data.dart';
 import 'package:home_calendar/edit_event.dart';
 //import 'package:intl/date_symbol_data_local.dart';
 import 'package:home_calendar/utils.dart';
+import 'package:home_calendar/event_list.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import 'color_picker.dart';
+//import 'color_picker.dart';
 
 
 void main() {
@@ -135,11 +136,25 @@ class _CalendarPage extends State<CalendarPage> {
     );
   }
 
-  Future editEvent() => showDialog(
-      context: context,
-      builder: (context) => const EditEventForm(),
-  );
+  Future editEvent() async {
+    Event newEvent  = new Event.blank();
+    newEvent.title = 'try this';
 
+    var result = await showDialog(
+      context: context,
+      builder: (context) => EditEventForm( event:newEvent ),
+    );
+
+    if( result is Event )
+      {
+        print( "New Event created:");
+        print( result.toJson() );
+      }
+    else
+      {
+        print( "-- Cancelled --");
+      }
+  }
   //}
 
 }
