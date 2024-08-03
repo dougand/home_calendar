@@ -2,6 +2,7 @@
 //import 'dart:html';
 //import 'dart:ui';
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 //import 'dart:convert';
 
@@ -35,8 +36,8 @@ class Event {
     return {
       'title': title,
       'details': details,
-      'date': date,
-      'colour': colour,
+      'date': date.toString(),
+      'colour': colour.toString(),
     };
   }
 
@@ -60,6 +61,9 @@ class EventList {
   // it's also private, so it can only be called in this class
   EventList._internal() {
   // initialization logic
+
+    events = <Event>[];
+
     print('EventList initialised');
     loadEventsFromFile();
   }
@@ -69,11 +73,25 @@ class EventList {
   List<Event>? events;
 
 
+  void addEvent( Event ev )
+  {
+    events?.add(ev);
+    debugPrint('EventList count = ${events?.length.toString()}');
+
+    saveEventsToFile();
+
+    loadEventsFromFile();
+  }
+
+
+
   Future<File> saveEventsToFile() async {
     final file = await _localFile;
 
+    List<String>? jsonStringList = events?.map((ev) => jsonEncode(ev.toJson())).toList();
+
     // Write the file
-    return file.writeAsString('This is a test');
+    return file.writeAsString(jsonStringList?.join() as String);
   }
 
 

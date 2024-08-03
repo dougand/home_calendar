@@ -149,6 +149,7 @@ class _CalendarPage extends State<CalendarPage> {
       {
         print( "New Event created:");
         print( result.toJson() );
+        EventList().addEvent(result);
       }
     else
       {
