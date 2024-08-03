@@ -137,7 +137,7 @@ class _CalendarPage extends State<CalendarPage> {
   }
 
   Future editEvent() async {
-    Event newEvent  = new Event.blank();
+    Event newEvent  = Event.blank();
     newEvent.title = 'try this';
 
     var result = await showDialog(

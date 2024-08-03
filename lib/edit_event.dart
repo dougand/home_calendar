@@ -80,7 +80,7 @@ class EditEventFormState extends State<EditEventForm> {
               mainAxisAlignment: MainAxisAlignment.center,
 
               children: [
-                Expanded(child: editDate(), flex: 3),
+                Expanded(flex: 3, child: editDate()),
                 Expanded(child: editColour()),
 
               ],
@@ -204,8 +204,8 @@ class EditEventFormState extends State<EditEventForm> {
                     labelText: 'Colour',
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   //  hintText: 'h',
-                    border: OutlineInputBorder(),
-                    suffixIcon: Icon(Icons.arrow_drop_down),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: const Icon(Icons.arrow_drop_down),
                     filled: true,
                     fillColor: ev.colour,
                   ),

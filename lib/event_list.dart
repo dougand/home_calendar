@@ -24,10 +24,10 @@ class Event {
   Event(this.title,this.details, this.date, this.colour);
 
   Event.blank() {
-    this.title="";
-    this.details="";
-    this.colour = Colors.blue;
-    this.date = DateTime.now();
+    title="";
+    details="";
+    colour = Colors.blue;
+    date = DateTime.now();
   }
 
   // Convert an instance of this class to a Map
