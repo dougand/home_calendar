@@ -31,6 +31,15 @@ class Event {
     date = DateTime.now();
   }
 
+  factory Event.fromJson(dynamic json) {
+    return Event(
+        json['title'] as String,
+        json['details'] as String,
+        json['date'] as DateTime,
+        json['colour'] as Color
+    );
+  }
+
   // Convert an instance of this class to a Map
   Map<String, dynamic> toJson() {
     return {
@@ -41,6 +50,10 @@ class Event {
     };
   }
 
+  String toString()
+  {
+    return '$title : $details : ${date.toString()}';
+  }
 
 }
 
@@ -70,13 +83,15 @@ class EventList {
 
 
 
-  List<Event>? events;
+  late List<Event> events;
 
 
   void addEvent( Event ev )
   {
-    events?.add(ev);
-    debugPrint('EventList count = ${events?.length.toString()}');
+    events.add(ev);
+
+    debugPrint('Add Event: ${ev.toString()}');
+    debugPrint('EventList count = ${events.length.toString()}');
 
     saveEventsToFile();
 
@@ -88,10 +103,14 @@ class EventList {
   Future<File> saveEventsToFile() async {
     final file = await _localFile;
 
-    List<String>? jsonStringList = events?.map((ev) => jsonEncode(ev.toJson())).toList();
+   // List<String> jsonStringList = events.map((ev) => jsonEncode(ev.toJson())).toList();
+
+    String jsonString = jsonEncode(events);
+    debugPrint('saveEventsToFile() $jsonString');
+
 
     // Write the file
-    return file.writeAsString(jsonStringList?.join() as String);
+    return file.writeAsString(jsonString);
   }
 
 
@@ -102,7 +121,16 @@ class EventList {
       // Read the file
       final contents = await file.readAsString();
 
-      print('loadEventsFromFile() $contents');
+      debugPrint('loadEventsFromFile() $contents');
+
+   //   List<Event> newEvents = [];
+
+      var eventListJson = jsonDecode(contents) as List;
+      List<Event> newEvents = eventListJson.map((eventJson) => Event.fromJson(eventJson)).toList();
+
+
+      debugPrint('Events loaded = ${newEvents.length.toString()}');
+      debugPrint(newEvents as String?);
 
       return 1;
     } catch (e) {
