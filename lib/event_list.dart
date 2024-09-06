@@ -35,8 +35,8 @@ class Event {
     return Event(
         json['title'] as String,
         json['details'] as String,
-        json['date'] as DateTime,
-        json['colour'] as Color
+        DateTime.tryParse(json['date']) ?? DateTime.now(),
+        Color(int.parse(json['colour']))
     );
   }
 
@@ -46,7 +46,7 @@ class Event {
       'title': title,
       'details': details,
       'date': date.toString(),
-      'colour': colour.toString(),
+      'colour': colour.value.toString(),
     };
   }
 
@@ -130,11 +130,12 @@ class EventList {
 
 
       debugPrint('Events loaded = ${newEvents.length.toString()}');
-      debugPrint(newEvents as String?);
+     // debugPrint(newEvents);
 
       return 1;
     } catch (e) {
       // If encountering an error, return 0
+      debugPrint( 'Exception: ${e.toString()}');
       return 0;
     }
   }
