@@ -5,6 +5,8 @@
 
 import 'package:flutter/material.dart';
 
+import 'event_list.dart';
+
 
 class CalendarEvent {
   final String title;
@@ -18,7 +20,7 @@ class CalendarEvent {
 
 class CalendarEventWidget extends StatefulWidget {
 
-  final CalendarEvent event;
+  final Event event;
 
   const CalendarEventWidget(this.event, {super.key});
 
@@ -28,7 +30,7 @@ class CalendarEventWidget extends StatefulWidget {
 
 class _CalendarEventWidget extends State<CalendarEventWidget> {
 
-  final CalendarEvent event;
+  final Event event;
 
   _CalendarEventWidget(this.event);
 

@@ -132,6 +132,8 @@ class EventList {
       debugPrint('Events loaded = ${newEvents.length.toString()}');
      // debugPrint(newEvents);
 
+      events = newEvents;
+
       return 1;
     } catch (e) {
       // If encountering an error, return 0
