@@ -3,14 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:home_calendar/calendar_event.dart';
-import 'package:home_calendar/calendar_data.dart';
 import 'package:home_calendar/edit_event.dart';
-//import 'package:intl/date_symbol_data_local.dart';
 import 'package:home_calendar/utils.dart';
 import 'package:home_calendar/event_list.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-//import 'color_picker.dart';
 
 
 void main() {
@@ -54,9 +50,15 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  CalendarData calData = CalendarData();
+  //CalendarData calData = CalendarData();
 
+  void refreshEvents()
+  {
+    debugPrint( 'refreshEvents');
+    setState(() {
 
+    });
+  }
 
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     if (!isSameDay(_selectedDay, selectedDay)) {
@@ -76,62 +78,75 @@ class _CalendarPage extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
 
-    List<CalendarEvent> theList = calData.testList;
+    List<Event> theList = EventList().events;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Calendar'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-
-          TableCalendar<Event>(
-            firstDay: kFirstDay,
-            lastDay: kLastDay,
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            rangeStartDay: _rangeStart,
-            rangeEndDay: _rangeEnd,
-            calendarFormat: _calendarFormat,
-            rangeSelectionMode: _rangeSelectionMode,
-            //eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
-            calendarStyle: const CalendarStyle(
-              // Use `CalendarStyle` to customize the UI
-              outsideDaysVisible: false,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+        
+            TableCalendar<Event>(
+              firstDay: kFirstDay,
+              lastDay: kLastDay,
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+              rangeStartDay: _rangeStart,
+              rangeEndDay: _rangeEnd,
+              calendarFormat: _calendarFormat,
+              rangeSelectionMode: _rangeSelectionMode,
+              //eventLoader: _getEventsForDay,
+              startingDayOfWeek: StartingDayOfWeek.monday,
+              calendarStyle: const CalendarStyle(
+                // Use `CalendarStyle` to customize the UI
+                outsideDaysVisible: false,
+              ),
+              headerStyle: const HeaderStyle(
+                formatButtonVisible: false,
+              ),
+              onDaySelected: _onDaySelected,
+              //onRangeSelected: _onRangeSelected,
+              onFormatChanged: (format) {
+                if (_calendarFormat != format) {
+                  setState(() {
+                    _calendarFormat = format;
+                  });
+                }
+              },
+              onPageChanged: (focusedDay) {
+                _focusedDay = focusedDay;
+              },
             ),
-            headerStyle: const HeaderStyle(
-              formatButtonVisible: false,
+        
+            const SizedBox(height: 2.0),
+        
+            ElevatedButton(
+              child: const Text('Add Event'),
+              onPressed: () => {
+                editEvent()
+              },
             ),
-            onDaySelected: _onDaySelected,
-            //onRangeSelected: _onRangeSelected,
-            onFormatChanged: (format) {
-              if (_calendarFormat != format) {
-                setState(() {
-                  _calendarFormat = format;
-                });
-              }
-            },
-            onPageChanged: (focusedDay) {
-              _focusedDay = focusedDay;
-            },
-          ),
+            const SizedBox(height: 2.0),
 
-          const SizedBox(height: 2.0),
 
-          ElevatedButton(
-            child: const Text('Add Event'),
-            onPressed: () => {
-              editEvent()
-            },
-          ),
-          const SizedBox(height: 2.0),
-
-          CalendarEventWidget(theList[0]),
-          CalendarEventWidget(theList[1]),
-          CalendarEventWidget(theList[2]),
-        ],
+            for( var event in theList )
+              Dismissible(
+                  key: Key(event.id),
+                  onDismissed: (direction){
+                    print('dismissed');
+                  },
+                  child: CalendarEventWidget(event))
+        
+            //        theList.map((event) => new CalendarEventWidget(event));
+        
+         //         CalendarEventWidget(theList[0]),
+         //         CalendarEventWidget(theList[1]),
+         //         CalendarEventWidget(theList[2]),
+          ],
+        ),
       ),
     );
   }
@@ -150,6 +165,7 @@ class _CalendarPage extends State<CalendarPage> {
         print( "New Event created:");
         print( result.toJson() );
         EventList().addEvent(result);
+        refreshEvents();
       }
     else
       {

@@ -9,10 +9,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
-
+import 'package:uuid/uuid.dart';
 
 
 class Event {
+
+  String id = const Uuid().v1();
 
   String title = '';
   String details = '';
@@ -131,6 +133,8 @@ class EventList {
 
       debugPrint('Events loaded = ${newEvents.length.toString()}');
      // debugPrint(newEvents);
+
+      events = newEvents;
 
       return 1;
     } catch (e) {
