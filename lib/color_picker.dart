@@ -25,7 +25,7 @@ class _ColorPickerDemoState extends State<ColorPickerDemo> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-     // scrollBehavior: AppScrollBehavior(),
+      // scrollBehavior: AppScrollBehavior(),
       title: 'ColorPicker',
       theme: ThemeData(useMaterial3: true),
       darkTheme: ThemeData(useMaterial3: true, brightness: Brightness.dark),
@@ -43,6 +43,7 @@ class _ColorPickerDemoState extends State<ColorPickerDemo> {
 
 class ColorPickerPage extends StatefulWidget {
   const ColorPickerPage({super.key, required this.themeMode});
+
   final ValueChanged<ThemeMode> themeMode;
 
   @override
@@ -68,7 +69,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
 
   // Make a custom ColorSwatch to name map from the above custom colors.
   final Map<ColorSwatch<Object>, String> colorsNameMap =
-  <ColorSwatch<Object>, String>{
+      <ColorSwatch<Object>, String>{
     ColorTools.createPrimarySwatch(guidePrimary): 'Guide Purple',
     ColorTools.createPrimarySwatch(guidePrimaryVariant): 'Guide Purple Variant',
     ColorTools.createAccentSwatch(guideSecondary): 'Guide Teal',
@@ -106,7 +107,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
             subtitle: Text(
               // ignore: lines_longer_than_80_chars
               '${ColorTools.materialNameAndCode(dialogPickerColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
+              'aka ${ColorTools.nameThatColor(dialogPickerColor)}',
             ),
             trailing: ColorIndicator(
               width: 44,
@@ -134,7 +135,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
             subtitle: Text(
               // ignore: lines_longer_than_80_chars
               '${ColorTools.materialNameAndCode(dialogSelectColor, colorSwatchNameMap: colorsNameMap)} '
-                  'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
+              'aka ${ColorTools.nameThatColor(dialogSelectColor)}',
             ),
             trailing: ColorIndicator(
                 width: 40,
@@ -208,8 +209,8 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
           ListTile(
             title: const Text('Select color below to change this color'),
             subtitle:
-            Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
-                'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
+                Text('${ColorTools.materialNameAndCode(screenPickerColor)} '
+                    'aka ${ColorTools.nameThatColor(screenPickerColor)}'),
             trailing: ColorIndicator(
               width: 44,
               height: 44,
@@ -311,7 +312,7 @@ class _ColorPickerPageState extends State<ColorPickerPage> {
       context,
       actionsPadding: const EdgeInsets.all(16),
       constraints:
-      const BoxConstraints(minHeight: 480, minWidth: 300, maxWidth: 320),
+          const BoxConstraints(minHeight: 480, minWidth: 300, maxWidth: 320),
     );
   }
 }

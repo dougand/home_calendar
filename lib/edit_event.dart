@@ -19,7 +19,7 @@ import 'event_list.dart';
 class EditEventForm extends StatefulWidget {
   final Event event;
 
-  const EditEventForm( {super.key, required this.event});
+  const EditEventForm({super.key, required this.event});
 
   @override
   EditEventFormState createState() {
@@ -37,7 +37,7 @@ class EditEventFormState extends State<EditEventForm> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
 
-  late Event ev;// = widget.event;
+  late Event ev; // = widget.event;
 
   DateFormat formatter = DateFormat('EEE, d MMM yyyy'); // use any format
 
@@ -70,78 +70,62 @@ class EditEventFormState extends State<EditEventForm> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-
-            const Text("Edit Note",
+            const Text(
+              "Edit Note",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             const SizedBox(height: 16),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-
               children: [
                 Expanded(flex: 3, child: editDate()),
                 Expanded(child: editColour()),
-
               ],
             ),
-
             const SizedBox(height: 32),
-
             editTitle(),
             const SizedBox(height: 16),
             editDescription(),
             const SizedBox(height: 16),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-
               children: [
-                Expanded(child: cancelButton() ),
+                Expanded(child: cancelButton()),
                 Expanded(child: saveButton()),
-
               ],
             ),
-
           ],
         ),
       ),
     );
   }
 
-
   Widget cancelButton() => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 16),
-    child: ElevatedButton(
-      onPressed: () {
-        print('Cancel pressed');
-        Navigator.pop(context);
-      },
-      child: const Text('Cancel'),
-    ),
-  );
-
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: ElevatedButton(
+          onPressed: () {
+            print('Cancel pressed');
+            Navigator.pop(context);
+          },
+          child: const Text('Cancel'),
+        ),
+      );
 
   Widget saveButton() => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 16),
-    child: ElevatedButton(
-      onPressed: () {
-        debugPrint('Save pressed');
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: ElevatedButton(
+          onPressed: () {
+            debugPrint('Save pressed');
 
-        if (_formKey.currentState!.validate()) {
-            debugPrint('Form validated');
-        }
+            if (_formKey.currentState!.validate()) {
+              debugPrint('Form validated');
+            }
 
-        Navigator.pop(context,ev);
-
-      },
-      child: const Text('Save'),
-    ),
-  );
-
-
-
-
+            Navigator.pop(context, ev);
+          },
+          child: const Text('Save'),
+        ),
+      );
 
   Widget editTitle() => TextFormField(
         decoration: const InputDecoration(
@@ -153,23 +137,22 @@ class EditEventFormState extends State<EditEventForm> {
         onChanged: (value) => setState(() => ev.title = value),
       );
 
-  Widget editDate() =>
-        InkWell(
-          onTap: () => displayDatePicker(context),
-          child: Container(
-            child: IgnorePointer(
-              child: TextFormField(
-                controller: _dateC,
-                decoration: const InputDecoration(
-                  labelText: 'Date/Time',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.arrow_drop_down),
-                ),
+  Widget editDate() => InkWell(
+        onTap: () => displayDatePicker(context),
+        child: Container(
+          child: IgnorePointer(
+            child: TextFormField(
+              controller: _dateC,
+              decoration: const InputDecoration(
+                labelText: 'Date/Time',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(),
+                suffixIcon: Icon(Icons.arrow_drop_down),
               ),
             ),
           ),
+        ),
       );
 
   Widget editDescription() => TextFormField(
@@ -185,34 +168,28 @@ class EditEventFormState extends State<EditEventForm> {
         onChanged: (value) => setState(() => ev.details = value),
       );
 
-
-
-
-
-  Widget editColour() =>
-          InkWell(
-            onTap: () => colorPickerDialog(),
-            child: Container(
-              child: IgnorePointer(
-                child: TextField(
-                  decoration:  InputDecoration(
-                    labelText: 'Colour',
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  //  hintText: 'h',
-                    border: const OutlineInputBorder(),
-                    suffixIcon: const Icon(Icons.arrow_drop_down),
-                    filled: true,
-                    fillColor: ev.colour,
-                  ),
-                ),
+  Widget editColour() => InkWell(
+        onTap: () => colorPickerDialog(),
+        child: Container(
+          child: IgnorePointer(
+            child: TextField(
+              decoration: InputDecoration(
+                labelText: 'Colour',
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                //  hintText: 'h',
+                border: const OutlineInputBorder(),
+                suffixIcon: const Icon(Icons.arrow_drop_down),
+                filled: true,
+                fillColor: ev.colour,
               ),
             ),
+          ),
+        ),
       );
 
   Color getColour() {
     return Colors.red;
   }
-
 
   Future displayDatePicker(BuildContext context) async {
     var date = await showDatePicker(
@@ -224,7 +201,7 @@ class EditEventFormState extends State<EditEventForm> {
 
     if (date != null) {
       setState(() {
-        selected =date;
+        selected = date;
         _dateC.text = formatter.format(date);
       });
     }
@@ -240,8 +217,6 @@ class EditEventFormState extends State<EditEventForm> {
     }
   }
 
-
-
   Future colorPickerDialog() async {
     // Wait for the dialog to return color selection result.
     final Color newColor = await showColorPickerDialog(
@@ -249,8 +224,7 @@ class EditEventFormState extends State<EditEventForm> {
       context,
       // We use the dialogSelectColor, as its starting color.
       ev.colour,
-      title: Text('Pick Colour',
-          style: Theme.of(context).textTheme.titleLarge),
+      title: Text('Pick Colour', style: Theme.of(context).textTheme.titleLarge),
       width: 40,
       height: 40,
       spacing: 0,
@@ -278,15 +252,12 @@ class EditEventFormState extends State<EditEventForm> {
         closeButton: false,
         dialogActionButtons: true,
       ),
-      transitionBuilder: (BuildContext context,
-          Animation<double> a1,
-          Animation<double> a2,
-          Widget widget) {
+      transitionBuilder: (BuildContext context, Animation<double> a1,
+          Animation<double> a2, Widget widget) {
         final double curvedValue =
             Curves.easeInOutBack.transform(a1.value) - 1.0;
         return Transform(
-          transform: Matrix4.translationValues(
-              0.0, curvedValue * 200, 0.0),
+          transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
           child: Opacity(
             opacity: a1.value,
             child: widget,
@@ -294,8 +265,8 @@ class EditEventFormState extends State<EditEventForm> {
         );
       },
       transitionDuration: const Duration(milliseconds: 400),
-      constraints: const BoxConstraints(
-          minHeight: 320, minWidth: 320, maxWidth: 320),
+      constraints:
+          const BoxConstraints(minHeight: 320, minWidth: 320, maxWidth: 320),
     );
     // We update the dialogSelectColor, to the returned result
     // color. If the dialog was dismissed it actually returns
@@ -305,9 +276,5 @@ class EditEventFormState extends State<EditEventForm> {
     setState(() {
       ev.colour = newColor;
     });
-
   }
-
-
 }
-
