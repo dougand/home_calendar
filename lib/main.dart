@@ -142,7 +142,53 @@ class _CalendarPage extends State<CalendarPage> {
                       onDismissed: (direction) {
                         print('dismissed');
                       },
-                      child: CalendarEventWidget(event));
+
+                      background: slideRightBackground(),
+                      secondaryBackground: slideLeftBackground(),
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.endToStart) {
+                          final bool res = await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Text(
+                                      "Are you sure you want to delete this item?"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: Text(
+                                        "Cancel",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop(false);
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: Text(
+                                        "Delete",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () {
+                                        // TODO: Delete the item from DB etc..
+                                        setState(() {
+                                        //todo:  itemsList.removeAt(index);
+                                        });
+                                        Navigator.of(context).pop(true);
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                          return res;
+                        } else {
+                          // TODO: Navigate to edit page;
+                        }
+                      },
+                      child: InkWell(
+                          onTap: () {
+                            print("clicked");
+                          },
+                          child: CalendarEventWidget(event)));
               },
             ),
           ),
@@ -186,6 +232,66 @@ class _CalendarPage extends State<CalendarPage> {
     }
   }
 //}
+
+
+  Widget slideRightBackground() {
+    return Container(
+      color: Colors.green,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              width: 20,
+            ),
+            Icon(
+              Icons.edit,
+              color: Colors.white,
+            ),
+            Text(
+              " Edit",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.left,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerLeft,
+      ),
+    );
+  }
+
+  Widget slideLeftBackground() {
+    return Container(
+      color: Colors.red,
+      child: Align(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+            Text(
+              " Delete",
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+              textAlign: TextAlign.right,
+            ),
+            SizedBox(
+              width: 20,
+            ),
+          ],
+        ),
+        alignment: Alignment.centerRight,
+      ),
+    );
+  }
+
 
 }
 
