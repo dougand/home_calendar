@@ -18,8 +18,9 @@ import 'event_list.dart';
 // Create a Form widget.
 class EditEventForm extends StatefulWidget {
   final Event event;
+  final bool isNew;
 
-  const EditEventForm({super.key, required this.event});
+  const EditEventForm({super.key, required this.event, required this.isNew});
 
   @override
   EditEventFormState createState() {
@@ -134,7 +135,8 @@ class EditEventFormState extends State<EditEventForm> {
           filled: true,
           fillColor: Colors.white,
         ),
-        onChanged: (value) => setState(() => ev.title = value),
+      initialValue: ev.title,
+      onChanged: (value) => setState(() => ev.title = value),
       );
 
   Widget editDate() => InkWell(
@@ -162,6 +164,7 @@ class EditEventFormState extends State<EditEventForm> {
           fillColor: Colors.white,
           border: OutlineInputBorder(),
         ),
+        initialValue: ev.details,
         keyboardType: TextInputType.multiline,
         minLines: 1,
         maxLines: null,

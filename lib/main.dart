@@ -124,7 +124,7 @@ class _CalendarPage extends State<CalendarPage> {
             child: const Text('Add Event'),
             onPressed: () =>
             {
-              editEvent()
+              createEvent()
             },
           ),
           const SizedBox(height: 2.0),
@@ -147,6 +147,7 @@ class _CalendarPage extends State<CalendarPage> {
                       secondaryBackground: slideLeftBackground(),
                       confirmDismiss: (direction) async {
                         if (direction == DismissDirection.endToStart) {
+                          //  Swipe to delete
                           final bool res = await showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -181,12 +182,20 @@ class _CalendarPage extends State<CalendarPage> {
                               });
                           return res;
                         } else {
+                          //  Swipe to edit
                           // TODO: Navigate to edit page;
+                          Event ev = theList[index];
+                          print("clicked ${ev.toString()}");
+                          editEvent(ev);
+
                         }
                       },
                       child: InkWell(
                           onTap: () {
-                            print("clicked");
+                            // Tap to edit
+                            Event ev = theList[index];
+                            print("clicked ${ev.toString()}");
+                            editEvent(ev);
                           },
                           child: CalendarEventWidget(event)));
               },
@@ -212,13 +221,13 @@ class _CalendarPage extends State<CalendarPage> {
     );
   }
 
-  Future editEvent() async {
+  Future createEvent() async {
     Event newEvent = Event.blank();
     newEvent.title = 'try this';
 
     var result = await showDialog(
       context: context,
-      builder: (context) => EditEventForm(event: newEvent),
+      builder: (context) => EditEventForm(event: newEvent, isNew: true),
     );
 
     if (result is Event) {
@@ -231,7 +240,26 @@ class _CalendarPage extends State<CalendarPage> {
       print("-- Cancelled --");
     }
   }
-//}
+
+
+  Future editEvent( Event ev ) async {
+
+    var result = await showDialog(
+      context: context,
+      builder: (context) => EditEventForm(event: ev, isNew: false),
+    );
+
+    if (result is Event) {
+      print("New Event created:");
+      print(result.toJson());
+      EventList().addEvent(result);
+      refreshEvents();
+    }
+    else {
+      print("-- Cancelled --");
+    }
+  }
+
 
 
   Widget slideRightBackground() {
