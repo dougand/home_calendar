@@ -6,6 +6,7 @@ import 'dart:io';
 //import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:uuid/uuid.dart';
@@ -50,6 +51,10 @@ class Event {
   @override
   String toString() {
     return '$title : $details : ${date.toString()}';
+  }
+
+  String formattedDate() {
+    return DateFormat('E, d MMMM yyyy').format(date);
   }
 }
 

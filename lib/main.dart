@@ -38,6 +38,8 @@ class CalendarPage extends StatefulWidget {
 
   @override
   _CalendarPage createState() => _CalendarPage();
+
+
 }
 
 class _CalendarPage extends State<CalendarPage> {
@@ -49,6 +51,9 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+
+  List<Event> _theList = EventList().events;
+
 
   //CalendarData calData = CalendarData();
 
@@ -76,6 +81,7 @@ class _CalendarPage extends State<CalendarPage> {
 
   @override
   Widget build(BuildContext context) {
+
     List<Event> theList = EventList().events;
 
     return Scaffold(

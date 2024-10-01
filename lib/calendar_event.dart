@@ -42,11 +42,24 @@ class _CalendarEventWidget extends State<CalendarEventWidget> {
           horizontal: 12.0,
           vertical: 4.0,
         ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8.0,
+          vertical: 0.0,
+        ),
         decoration: BoxDecoration(
           border: Border.all(color: borderCol),
           borderRadius: BorderRadius.circular(12.0),
           color: backCol,
         ),
-        child: ListTile(title: Text(event.title)));
+//        child: ListTile(title: Text(event.title)));
+          child: Column( crossAxisAlignment: CrossAxisAlignment.stretch,
+              children:[
+                Text(event.formattedDate()),
+                Text(event.title, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(event.details),
+              ],
+          ),
+    );
+
   }
 }
