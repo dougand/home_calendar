@@ -52,7 +52,7 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  List<Event> _theList = EventList().events;
+  EventList _theList = EventList();
 
 
   //CalendarData calData = CalendarData();
@@ -82,7 +82,7 @@ class _CalendarPage extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
 
-    List<Event> theList = EventList().events;
+    List<Event> theList = _theList.events;
 
     return Scaffold(
       appBar: AppBar(
@@ -177,7 +177,9 @@ class _CalendarPage extends State<CalendarPage> {
                                       ),
                                       onPressed: () {
                                         // TODO: Delete the item from DB etc..
+                                        deleteEvent(theList[index]);
                                         setState(() {
+
                                         //todo:  itemsList.removeAt(index);
                                         });
                                         Navigator.of(context).pop(true);
@@ -256,9 +258,9 @@ class _CalendarPage extends State<CalendarPage> {
     );
 
     if (result is Event) {
-      print("New Event created:");
+      print("Old Event edited:");
       print(result.toJson());
-      EventList().addEvent(result);
+      //EventList().addEvent(result);
       refreshEvents();
     }
     else {
@@ -266,6 +268,9 @@ class _CalendarPage extends State<CalendarPage> {
     }
   }
 
+  void deleteEvent( Event ev) {
+    EventList().deleteEvent(ev);
+  }
 
 
   Widget slideRightBackground() {

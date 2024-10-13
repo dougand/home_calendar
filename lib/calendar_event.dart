@@ -55,7 +55,9 @@ class _CalendarEventWidget extends State<CalendarEventWidget> {
           child: Column( crossAxisAlignment: CrossAxisAlignment.stretch,
               children:[
                 Text(event.formattedDate()),
-                Text(event.title, style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(event.title,
+                    style: TextStyle(fontWeight: FontWeight.bold,
+                    fontSize: 20)),
                 Text(event.details),
               ],
           ),

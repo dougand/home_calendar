@@ -93,6 +93,19 @@ class EventList {
     loadEventsFromFile();
   }
 
+
+  void deleteEvent(Event ev) {
+
+
+    debugPrint('Delete Event: ${ev.toString()}');
+
+    events.remove(ev);
+
+    debugPrint('EventList count = ${events.length.toString()}');
+
+
+  }
+
   Future<File> saveEventsToFile() async {
     final file = await _localFile;
 
