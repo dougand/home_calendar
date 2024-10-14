@@ -46,9 +46,9 @@ class EditEventFormState extends State<EditEventForm> {
   final _timeC = TextEditingController();
 
   ///Date
-  DateTime selected = DateTime.now();
+ // DateTime selected = DateTime.now();
   DateTime initial = DateTime(2000);
-  DateTime last = DateTime(2025);
+  DateTime last = DateTime(2099);
 
   ///Time
   TimeOfDay timeOfDay = TimeOfDay.now();
@@ -58,7 +58,7 @@ class EditEventFormState extends State<EditEventForm> {
     super.initState();
 
     ev = widget.event;
-    _dateC.text = formatter.format(selected);
+    _dateC.text = formatter.format(ev.date);
   }
 
   @override
@@ -197,14 +197,14 @@ class EditEventFormState extends State<EditEventForm> {
   Future displayDatePicker(BuildContext context) async {
     var date = await showDatePicker(
       context: context,
-      initialDate: selected,
+      initialDate: ev.date,
       firstDate: initial,
       lastDate: last,
     );
 
     if (date != null) {
       setState(() {
-        selected = date;
+        ev.date = date;
         _dateC.text = formatter.format(date);
       });
     }

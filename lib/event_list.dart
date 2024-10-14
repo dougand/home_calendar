@@ -102,7 +102,7 @@ class EventList {
     events.remove(ev);
 
     debugPrint('EventList count = ${events.length.toString()}');
-
+    saveEventsToFile();
 
   }
 
