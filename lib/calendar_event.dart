@@ -56,7 +56,7 @@ class _CalendarEventWidget extends State<CalendarEventWidget> {
               children:[
                 Text(event.formattedDate()),
                 Text(event.title,
-                    style: TextStyle(fontWeight: FontWeight.bold,
+                    style: const TextStyle(fontWeight: FontWeight.bold,
                     fontSize: 20)),
                 Text(event.details),
               ],

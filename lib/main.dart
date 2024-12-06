@@ -52,7 +52,7 @@ class _CalendarPage extends State<CalendarPage> {
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
 
-  EventList _theList = EventList();
+  final EventList _theList = EventList();
 
 
   //CalendarData calData = CalendarData();
@@ -82,7 +82,7 @@ class _CalendarPage extends State<CalendarPage> {
   @override
   Widget build(BuildContext context) {
 
-    List<Event> theList = _theList.events;
+    List<Event> theList = _theList.getEvents();
 
     return Scaffold(
       appBar: AppBar(
@@ -158,11 +158,11 @@ class _CalendarPage extends State<CalendarPage> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  content: Text(
+                                  content: const Text(
                                       "Are you sure you want to delete this item?"),
                                   actions: <Widget>[
                                     TextButton(
-                                      child: Text(
+                                      child: const Text(
                                         "Cancel",
                                         style: TextStyle(color: Colors.black),
                                       ),
@@ -171,7 +171,7 @@ class _CalendarPage extends State<CalendarPage> {
                                       },
                                     ),
                                     TextButton(
-                                      child: Text(
+                                      child: const Text(
                                         "Delete",
                                         style: TextStyle(color: Colors.red),
                                       ),
@@ -197,6 +197,7 @@ class _CalendarPage extends State<CalendarPage> {
                           editEvent(ev);
 
                         }
+                        return null;
                       },
                       child: InkWell(
                           onTap: () {
@@ -276,7 +277,8 @@ class _CalendarPage extends State<CalendarPage> {
   Widget slideRightBackground() {
     return Container(
       color: Colors.green,
-      child: Align(
+      child: const Align(
+        alignment: Alignment.centerLeft,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -297,7 +299,6 @@ class _CalendarPage extends State<CalendarPage> {
             ),
           ],
         ),
-        alignment: Alignment.centerLeft,
       ),
     );
   }
@@ -305,7 +306,8 @@ class _CalendarPage extends State<CalendarPage> {
   Widget slideLeftBackground() {
     return Container(
       color: Colors.red,
-      child: Align(
+      child: const Align(
+        alignment: Alignment.centerRight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
@@ -326,7 +328,6 @@ class _CalendarPage extends State<CalendarPage> {
             ),
           ],
         ),
-        alignment: Alignment.centerRight,
       ),
     );
   }

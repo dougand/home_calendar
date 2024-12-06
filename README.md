@@ -1,6 +1,6 @@
 # home_calendar
 
-A family diary calendar todo app
+A new Flutter project.
 
 ## Getting Started
 

@@ -1,6 +1,7 @@
 //import 'dart:html';
 //import 'dart:ui';
 import 'dart:async';
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 //import 'dart:convert';
@@ -48,6 +49,11 @@ class Event {
     };
   }
 
+  DateTime getKey() {
+    return date;
+  }
+
+
   @override
   String toString() {
     return '$title : $details : ${date.toString()}';
@@ -75,12 +81,20 @@ class EventList {
     // initialization logic
 
     events = <Event>[];
+    sortedMap = SplayTreeMap<DateTime,Event>((a,b) => a.compareTo(b));
 
     print('EventList initialised');
     loadEventsFromFile();
   }
 
   late List<Event> events;
+
+  late SplayTreeMap<DateTime, Event> sortedMap;
+
+
+  List<Event> getEvents() {
+    return events;
+  }
 
   void addEvent(Event ev) {
     events.add(ev);
@@ -125,6 +139,7 @@ class EventList {
       // Read the file
       final contents = await file.readAsString();
 
+      debugPrint('===================================');
       debugPrint('loadEventsFromFile() $contents');
 
       //   List<Event> newEvents = [];
@@ -135,13 +150,19 @@ class EventList {
 
       debugPrint('Events loaded = ${newEvents.length.toString()}');
       // debugPrint(newEvents);
-
       events = newEvents;
 
+ //     SplayTreeMap splayTree = SplayTreeMap<DateTime, Event>.fromIterable(newEvents,
+ //        key: (i) => i.getKey(), value: (i) => i);
+  //    print(splayTree); // {11: 121, 12: 144, 13: 169, 14: 196}
+
+      debugPrint('===================================');
       return 1;
+
     } catch (e) {
       // If encountering an error, return 0
       debugPrint('Exception: ${e.toString()}');
+      debugPrint('===================================');
       return 0;
     }
   }
