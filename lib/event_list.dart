@@ -64,6 +64,43 @@ class Event {
   }
 }
 
+//=================================================================
+
+class SaveData {
+
+  String counterStr = '';
+  String listStr = '';
+
+
+  SaveData( int counter, List<Event> eventList){
+    counterStr = counter.toString();
+    listStr = jsonEncode(eventList);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'count': counterStr,
+      'details': listStr,
+    };
+  }
+
+  String createJson() {
+
+    String fileStr = toJson().toString();
+
+    debugPrint('SaveData:createJson()');
+
+    debugPrint(fileStr);
+    return fileStr;
+  }
+
+
+}
+
+
+//=================================================================
+
+
 class EventList {
   static final EventList _instance = EventList._internal();
 
@@ -91,6 +128,7 @@ class EventList {
 
   late SplayTreeMap<DateTime, Event> sortedMap;
 
+  late int eventCounter;
 
   List<Event> getEvents() {
     return events;
@@ -128,6 +166,9 @@ class EventList {
     String jsonString = jsonEncode(events);
     debugPrint('saveEventsToFile() $jsonString');
 
+    SaveData svd = SaveData(32, events);
+    svd.createJson();
+
     // Write the file
     return file.writeAsString(jsonString);
   }
@@ -152,9 +193,9 @@ class EventList {
       // debugPrint(newEvents);
       events = newEvents;
 
- //     SplayTreeMap splayTree = SplayTreeMap<DateTime, Event>.fromIterable(newEvents,
- //        key: (i) => i.getKey(), value: (i) => i);
-  //    print(splayTree); // {11: 121, 12: 144, 13: 169, 14: 196}
+      SplayTreeMap splayTree = SplayTreeMap<DateTime, Event>.fromIterable(newEvents,
+         key: (i) => i.getKey(), value: (i) => i);
+      print(splayTree); // {11: 121, 12: 144, 13: 169, 14: 196}
 
       debugPrint('===================================');
       return 1;
